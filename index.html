@@ -48,7 +48,7 @@
   <div class="card">
     <header>
       <div>
-        <h1>Simulador de Logs — Página de demonstração</h1>
+        <h1>LOGS OCPIXPTO</h1>
        
       </div>
       <div class="sub">Status: <strong id="status">Running</strong></div>
@@ -75,7 +75,7 @@
       </label>
     </div>
 
-    <div class="footer">Dica: Personaliza o array <code>sampleLogs</code> no script para as mensagens que preferires.</div>
+    <div class="footer"></div>
   </div>
 </div>
 
@@ -104,65 +104,52 @@ let idx = 0;
 let timer = null;
 let speed = +speedInput.value;
 
-// Exemplo de logs que tínhamos / queres -> personaliza
-// const sampleLogs = [
-//   {lvl:'INFO', msg:'Starting background jobs...'},
-//   {lvl:'INFO', msg:'Connected to DB replica: db-prod-1'},
-//   {lvl:'WARN', msg:'High memory usage detected: 84%'},
-//   {lvl:'INFO', msg:'New websocket connection from 10.0.2.14'},
-//   {lvl:'ERROR', msg:'Failed to push metrics: timeout'},
-//   {lvl:'INFO', msg:'Deployment v1.3.7 started'},
-//   {lvl:'INFO', msg:'Cache miss for key: user_1245'},
-//   {lvl:'INFO', msg:'Worker #3 completed task #4551'},
-//   {lvl:'WARN', msg:'TLS certificate expires in 7 days'},
-//   {lvl:'INFO', msg:'Processed 214 events in 5s'},
-// ];
-
   const sampleLogs = [
-  {lvl:'INFO', msg:'[2025-09-15 07:50:12] STATION_STATUS: ID=CS101, Location="Lisbon", Status=Online, AvailableConnectors=4'},
-  {lvl:'INFO', msg:'[2025-09-15 07:55:45] SESSION_START: UserID=U201, StationID=CS101, ConnectorID=C1, StartTime=07:55, TariffID=T10'},
-  {lvl:'INFO', msg:'[2025-09-15 08:00:30] SESSION_UPDATE: SessionID=S501, EnergyDelivered=4.5kWh, Status=Charging'},
-  {lvl:'WARN', msg:'[2025-09-15 08:02:07] SESSION_ALERT: SessionID=S502, Status=Interrupted, Reason=PaymentFailed'},
-  {lvl:'INFO', msg:'[2025-09-15 08:05:12] STATION_STATUS: ID=CS102, Location="Lisbon", Status=Online, AvailableConnectors=3'},
-  {lvl:'INFO', msg:'[2025-09-15 08:10:45] SESSION_START: UserID=U204, StationID=CS102, ConnectorID=C1, StartTime=08:10, TariffID=T12'},
-  {lvl:'INFO', msg:'[2025-09-15 08:15:30] SESSION_UPDATE: SessionID=S501, EnergyDelivered=5.2kWh, Status=Charging'},
-  {lvl:'ERROR', msg:'[2025-09-15 08:18:07] SESSION_ALERT: SessionID=S503, Status=Interrupted, Reason=Overcurrent'},
-  {lvl:'INFO', msg:'[2025-09-15 08:20:11] TARIFF_UPDATE: TariffID=T12, NewRate=0.35€/kWh'},
-  {lvl:'INFO', msg:'[2025-09-15 08:22:34] SESSION_END: SessionID=S501, EnergyDelivered=12.5kWh, Cost=4.375€'},
-  {lvl:'WARN', msg:'[2025-09-15 08:25:50] STATION_STATUS: ID=CS103, Location="Porto", Status=Maintenance, AvailableConnectors=0'},
-  {lvl:'INFO', msg:'[2025-09-15 08:28:19] SESSION_START: UserID=U205, StationID=CS103, ConnectorID=C2, StartTime=08:28, TariffID=T15'},
-  {lvl:'INFO', msg:'[2025-09-15 08:30:05] SESSION_END: SessionID=S503, EnergyDelivered=8.0kWh, Cost=2.4€'},
-  {lvl:'WARN', msg:'[2025-09-15 08:32:42] USER_ALERT: UserID=U205, Message="Session failed, station under maintenance"'},
-  {lvl:'INFO', msg:'[2025-09-15 08:35:17] STATION_STATUS: ID=CS104, Location="Lisbon", Status=Online, AvailableConnectors=2'},
-  {lvl:'INFO', msg:'[2025-09-15 08:38:50] SESSION_START: UserID=U206, StationID=CS104, ConnectorID=C1, StartTime=08:38, TariffID=T12'},
-  {lvl:'INFO', msg:'[2025-09-15 08:42:11] SESSION_UPDATE: SessionID=S504, EnergyDelivered=3.5kWh, Status=Charging'},
-  {lvl:'INFO', msg:'[2025-09-15 08:45:30] SESSION_END: SessionID=S504, EnergyDelivered=7.0kWh, Cost=2.45€'},
-  {lvl:'INFO', msg:'[2025-09-15 08:47:12] SESSION_START: UserID=U207, StationID=CS101, ConnectorID=C2, StartTime=08:47, TariffID=T10'},
-  {lvl:'INFO', msg:'[2025-09-15 08:50:45] SESSION_UPDATE: SessionID=S505, EnergyDelivered=2.0kWh, Status=Charging'},
-  {lvl:'INFO', msg:'[2025-09-15 08:55:12] SESSION_END: SessionID=S505, EnergyDelivered=6.0kWh, Cost=1.8€'},
-  {lvl:'INFO', msg:'[2025-09-15 08:57:30] STATION_STATUS: ID=CS105, Location="Coimbra", Status=Online, AvailableConnectors=1'},
-  {lvl:'INFO', msg:'[2025-09-15 09:00:01] SESSION_START: UserID=U208, StationID=CS105, ConnectorID=C1, StartTime=09:00, TariffID=T18'},
-  {lvl:'ERROR', msg:'[2025-09-15 09:05:22] SESSION_ALERT: SessionID=S506, Status=Interrupted, Reason=HardwareFailure'},
-  {lvl:'INFO', msg:'[2025-09-15 09:10:45] TARIFF_UPDATE: TariffID=T18, NewRate=0.40€/kWh'},
-  {lvl:'INFO', msg:'[2025-09-15 09:12:17] SESSION_END: SessionID=S506, EnergyDelivered=3.0kWh, Cost=1.2€'},
-  {lvl:'INFO', msg:'[2025-09-15 09:15:30] STATION_STATUS: ID=CS102, Location="Lisbon", Status=Online, AvailableConnectors=2'},
-  {lvl:'INFO', msg:'[2025-09-15 09:18:50] SESSION_START: UserID=U209, StationID=CS102, ConnectorID=C2, StartTime=09:18, TariffID=T12'},
-  {lvl:'INFO', msg:'[2025-09-15 09:22:11] SESSION_UPDATE: SessionID=S507, EnergyDelivered=4.0kWh, Status=Charging'},
-  {lvl:'INFO', msg:'[2025-09-15 09:25:30] SESSION_END: SessionID=S507, EnergyDelivered=9.0kWh, Cost=3.15€'},
-  {lvl:'INFO', msg:'[2025-09-15 09:28:42] USER_ALERT: UserID=U209, Message="Charging completed successfully"'},
-  {lvl:'INFO', msg:'[2025-09-15 09:30:17] STATION_STATUS: ID=CS103, Location="Porto", Status=Online, AvailableConnectors=2'},
-  {lvl:'INFO', msg:'[2025-09-15 09:35:50] SESSION_START: UserID=U210, StationID=CS103, ConnectorID=C1, StartTime=09:35, TariffID=T15'},
-  {lvl:'INFO', msg:'[2025-09-15 09:40:11] SESSION_UPDATE: SessionID=S508, EnergyDelivered=5.5kWh, Status=Charging'},
-  {lvl:'INFO', msg:'[2025-09-15 09:45:30] SESSION_END: SessionID=S508, EnergyDelivered=11.0kWh, Cost=3.3€'},
-  {lvl:'WARN', msg:'[2025-09-15 09:47:12] STATION_STATUS: ID=CS104, Location="Lisbon", Status=Maintenance, AvailableConnectors=0'},
-  {lvl:'INFO', msg:'[2025-09-15 09:50:01] SESSION_START: UserID=U211, StationID=CS104, ConnectorID=C1, StartTime=09:50, TariffID=T12'},
-  {lvl:'ERROR', msg:'[2025-09-15 09:55:22] SESSION_ALERT: SessionID=S509, Status=Interrupted, Reason=StationOffline'},
-  {lvl:'WARN', msg:'[2025-09-15 09:58:45] USER_ALERT: UserID=U211, Message="Charging session interrupted due to maintenance"'},
-  {lvl:'INFO', msg:'[2025-09-15 10:00:17] STATION_STATUS: ID=CS105, Location="Coimbra", Status=Online, AvailableConnectors=1'},
-  {lvl:'INFO', msg:'[2025-09-15 10:05:30] SESSION_START: UserID=U212, StationID=CS105, ConnectorID=C1, StartTime=10:05, TariffID=T18'},
-  {lvl:'INFO', msg:'[2025-09-15 10:10:11] SESSION_UPDATE: SessionID=S510, EnergyDelivered=2.5kWh, Status=Charging'},
-  {lvl:'INFO', msg:'[2025-09-15 10:15:30] SESSION_END: SessionID=S510, EnergyDelivered=5.0kWh, Cost=2.0€'}
+  { lvl: 'INFO', msg: 'STATION_STATUS: ID=CS101, Location="Lisbon", Status=Online, AvailableConnectors=4' },
+  { lvl: 'INFO', msg: 'SESSION_START: UserID=U201, StationID=CS101, ConnectorID=C1, StartTime=07:55, TariffID=T10' },
+  { lvl: 'INFO', msg: 'SESSION_UPDATE: SessionID=S501, EnergyDelivered=4.5kWh, Status=Charging' },
+  { lvl: 'ERROR', msg: 'SESSION_ALERT: SessionID=S502, Status=Interrupted, Reason=PaymentFailed' },
+  { lvl: 'INFO', msg: 'STATION_STATUS: ID=CS102, Location="Lisbon", Status=Online, AvailableConnectors=3' },
+  { lvl: 'INFO', msg: 'SESSION_START: UserID=U204, StationID=CS102, ConnectorID=C1, StartTime=08:10, TariffID=T12' },
+  { lvl: 'INFO', msg: 'SESSION_UPDATE: SessionID=S501, EnergyDelivered=5.2kWh, Status=Charging' },
+  { lvl: 'ERROR', msg: 'SESSION_ALERT: SessionID=S503, Status=Interrupted, Reason=Overcurrent' },
+  { lvl: 'WARN', msg: 'TARIFF_UPDATE: TariffID=T12, NewRate=0.35€/kWh' },
+  { lvl: 'INFO', msg: 'SESSION_END: SessionID=S501, EnergyDelivered=12.5kWh, Cost=4.375€' },
+  { lvl: 'WARN', msg: 'STATION_STATUS: ID=CS103, Location="Porto", Status=Maintenance, AvailableConnectors=0' },
+  { lvl: 'INFO', msg: 'SESSION_START: UserID=U205, StationID=CS103, ConnectorID=C2, StartTime=08:28, TariffID=T15' },
+  { lvl: 'INFO', msg: 'SESSION_END: SessionID=S503, EnergyDelivered=8.0kWh, Cost=2.4€' },
+  { lvl: 'WARN', msg: 'USER_ALERT: UserID=U205, Message="Session failed, station under maintenance"' },
+  { lvl: 'INFO', msg: 'STATION_STATUS: ID=CS104, Location="Lisbon", Status=Online, AvailableConnectors=2' },
+  { lvl: 'INFO', msg: 'SESSION_START: UserID=U206, StationID=CS104, ConnectorID=C1, StartTime=08:38, TariffID=T12' },
+  { lvl: 'INFO', msg: 'SESSION_UPDATE: SessionID=S504, EnergyDelivered=3.5kWh, Status=Charging' },
+  { lvl: 'INFO', msg: 'SESSION_END: SessionID=S504, EnergyDelivered=7.0kWh, Cost=2.45€' },
+  { lvl: 'INFO', msg: 'SESSION_START: UserID=U207, StationID=CS101, ConnectorID=C2, StartTime=08:47, TariffID=T10' },
+  { lvl: 'INFO', msg: 'SESSION_UPDATE: SessionID=S505, EnergyDelivered=2.0kWh, Status=Charging' },
+  { lvl: 'INFO', msg: 'SESSION_END: SessionID=S505, EnergyDelivered=6.0kWh, Cost=1.8€' },
+  { lvl: 'INFO', msg: 'STATION_STATUS: ID=CS105, Location="Coimbra", Status=Online, AvailableConnectors=1' },
+  { lvl: 'INFO', msg: 'SESSION_START: UserID=U208, StationID=CS105, ConnectorID=C1, StartTime=09:00, TariffID=T18' },
+  { lvl: 'ERROR', msg: 'SESSION_ALERT: SessionID=S506, Status=Interrupted, Reason=HardwareFailure' },
+  { lvl: 'WARN', msg: 'TARIFF_UPDATE: TariffID=T18, NewRate=0.40€/kWh' },
+  { lvl: 'INFO', msg: 'SESSION_END: SessionID=S506, EnergyDelivered=3.0kWh, Cost=1.2€' },
+  { lvl: 'INFO', msg: 'STATION_STATUS: ID=CS102, Location="Lisbon", Status=Online, AvailableConnectors=2' },
+  { lvl: 'INFO', msg: 'SESSION_START: UserID=U209, StationID=CS102, ConnectorID=C2, StartTime=09:18, TariffID=T12' },
+  { lvl: 'INFO', msg: 'SESSION_UPDATE: SessionID=S507, EnergyDelivered=4.0kWh, Status=Charging' },
+  { lvl: 'INFO', msg: 'SESSION_END: SessionID=S507, EnergyDelivered=9.0kWh, Cost=3.15€' },
+  { lvl: 'WARN', msg: 'USER_ALERT: UserID=U209, Message="Charging completed successfully"' },
+  { lvl: 'INFO', msg: 'STATION_STATUS: ID=CS103, Location="Porto", Status=Online, AvailableConnectors=2' },
+  { lvl: 'INFO', msg: 'SESSION_START: UserID=U210, StationID=CS103, ConnectorID=C1, StartTime=09:35, TariffID=T15' },
+  { lvl: 'INFO', msg: 'SESSION_UPDATE: SessionID=S508, EnergyDelivered=5.5kWh, Status=Charging' },
+  { lvl: 'INFO', msg: 'SESSION_END: SessionID=S508, EnergyDelivered=11.0kWh, Cost=3.3€' },
+  { lvl: 'WARN', msg: 'STATION_STATUS: ID=CS104, Location="Lisbon", Status=Maintenance, AvailableConnectors=0' },
+  { lvl: 'INFO', msg: 'SESSION_START: UserID=U211, StationID=CS104, ConnectorID=C1, StartTime=09:50, TariffID=T12' },
+  { lvl: 'ERROR', msg: 'SESSION_ALERT: SessionID=S509, Status=Interrupted, Reason=StationOffline' },
+  { lvl: 'WARN', msg: 'USER_ALERT: UserID=U211, Message="Charging session interrupted due to maintenance"' },
+  { lvl: 'INFO', msg: 'STATION_STATUS: ID=CS105, Location="Coimbra", Status=Online, AvailableConnectors=1' },
+  { lvl: 'INFO', msg: 'SESSION_START: UserID=U212, StationID=CS105, ConnectorID=C1, StartTime=10:05, TariffID=T18' },
+  { lvl: 'INFO', msg: 'SESSION_UPDATE: SessionID=S510, EnergyDelivered=2.5kWh, Status=Charging' },
+  { lvl: 'INFO', msg: 'SESSION_END: SessionID=S510, EnergyDelivered=5.0kWh, Cost=2.0€' },
 ];
+
 
 
 // Utilitário timestamp
