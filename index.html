@@ -14,7 +14,7 @@
     --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Courier New", monospace;
   }
   html,body{height:100%;margin:0;background:linear-gradient(180deg,var(--bg),#071021);font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--text)}
-  .wrap{max-width:1000px;margin:32px auto;padding:20px}
+  .wrap{max-width:1200px;margin:32px auto;padding:20px;display:grid;grid-template-columns:2fr 1fr;gap:20px}
   .card{
     background:linear-gradient(180deg,var(--panel),#071827);
     border-radius:10px;padding:18px;
@@ -38,73 +38,68 @@
   .controls{margin-top:12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
   button{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--text);padding:8px 10px;border-radius:8px;cursor:pointer}
   button.primary{background:linear-gradient(90deg,#1b5bff,#3bd6a5);color:#021018;border:none}
-  label{font-size:13px;color:var(--muted)}
-  input[type=range]{width:140px}
   .footer{font-size:12px;color:var(--muted);margin-top:10px}
+
+  /* Estilo painel de perguntas */
+  .questions h2{margin-top:0;font-size:16px;color:var(--accent)}
+  .question-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;max-height:520px;overflow:auto}
+  .question-item{
+    background:rgba(255,255,255,0.03);
+    border:1px solid rgba(255,255,255,0.06);
+    border-radius:8px;
+    padding:10px 12px;
+    font-size:13px;
+    line-height:1.4;
+  }
+  .question-item strong{color:var(--accent);margin-right:6px}
 </style>
 </head>
 <body>
 <div class="wrap">
+  <!-- Painel de Logs -->
   <div class="card">
     <header>
-      <div>
-        <h1>LOGS OCPIXPTO</h1>
-       
-      </div>
+      <div><h1>LOGS OCPIXPTO</h1></div>
       <div class="sub">Status: <strong id="status">Running</strong></div>
     </header>
-
     <div id="terminal" class="terminal" aria-live="polite"></div>
-
     <div class="controls">
       <button id="btnPause">Pausar</button>
       <button id="btnClear">Limpar</button>
       <button class="primary" id="btnOne">Adicionar 1 linha</button>
-
-      <!-- <label>Velocidade (ms entre linhas)
-        <input id="speed" type="range" min="200" max="2000" step="100" value="800">
-        <span id="spdVal">800</span>
-      </label> -->
-
-      <!-- <label>Tipo de conteúdo:
-        <select id="mode">
-          <option value="random">Aleatório</option>
-          <option value="cycle">Cíclico (array)</option>
-          <option value="timestamp">Apenas timestamps</option>
-        </select>
-      </label>
-    </div> -->
-
+    </div>
     <div class="footer"></div>
+  </div>
+
+  <!-- Painel de Perguntas -->
+  <div class="card questions">
+    <h2>Perguntas</h2>
+    <ul class="question-list">
+      <li class="question-item"><strong>1.</strong> A tarifa T12 foi atualizada antes da conclusão da sessão S501.</li>
+      <li class="question-item"><strong>2.</strong> A sessão S504 do usuário U206 entregou exatamente 7 kWh de energia e custou 2,45€.</li>
+      <li class="question-item"><strong>3.</strong> A estação CS104 estava online e com conectores disponíveis quando a sessão S509 começou.</li>
+      <li class="question-item"><strong>4.</strong> O custo da sessão S507 do usuário U209 foi maior que 4€.</li>
+      <li class="question-item"><strong>5.</strong> A sessão S502 foi interrompida devido a falha de pagamento.</li>
+      <li class="question-item"><strong>6.</strong> O usuário U212 completou sua sessão na estação CS105 sem alertas ou interrupções.</li>
+      <li class="question-item"><strong>7.</strong> A estação CS101 estava online e tinha 4 conectores disponíveis quando a sessão do usuário U201 começou.</li>
+      <li class="question-item"><strong>8.</strong> O usuário U205 conseguiu iniciar a sessão S503 na estação CS103 enquanto ela estava em manutenção.</li>
+    </ul>
   </div>
 </div>
 
 <script>
-/*
-  Simulador de logs simples:
-  - Edita 'sampleLogs' para as tuas linhas reais.
-  - Modos:
-    - random: escolhe aleatoriamente das mensagens
-    - cycle: percorre o array em loop
-    - timestamp: só escreve timestamps
-  - Deploy no GitHub Pages: coloca este ficheiro no repo e ativa Pages.
-*/
-
 const terminal = document.getElementById('terminal');
 const btnPause = document.getElementById('btnPause');
 const btnClear = document.getElementById('btnClear');
 const btnOne = document.getElementById('btnOne');
-const speedInput = document.getElementById('speed');
-const spdVal = document.getElementById('spdVal');
 const statusEl = document.getElementById('status');
-const modeSelect = document.getElementById('mode');
 
 let running = true;
 let idx = 0;
 let timer = null;
-let speed = +speedInput.value;
+let speed = 1000; // fixo, 1s por linha
 
-  const sampleLogs = [
+const sampleLogs = [
   { lvl: 'INFO', msg: 'STATION_STATUS: ID=CS101, Location="Lisbon", Status=Online, AvailableConnectors=4' },
   { lvl: 'INFO', msg: 'SESSION_START: UserID=U201, StationID=CS101, ConnectorID=C1, StartTime=07:55, TariffID=T10' },
   { lvl: 'INFO', msg: 'SESSION_UPDATE: SessionID=S501, EnergyDelivered=4.5kWh, Status=Charging' },
@@ -151,61 +146,35 @@ let speed = +speedInput.value;
 ];
 
 
+// timestamp
+function ts() { return new Date().toLocaleString(); }
 
-// Utilitário timestamp
-function ts() {
-  return new Date().toLocaleString();
-}
-
-// Cria uma linha com "tipo" de cor por nível
+// linha formatada
 function formatLine(obj) {
   const time = `<span class="ts">[${ts()}]</span>`;
   const lvlClass = obj.lvl === 'ERROR' ? 'lvl-err' : (obj.lvl === 'WARN' ? 'lvl-warn' : 'lvl-info');
   const lvl = `<span class="${lvlClass}">[${obj.lvl}]</span>`;
-  const msg = `<span class="msg">${escapeHtml(obj.msg)}</span>`;
-  return `${time}${lvl} ${msg}`;
+  return `${time}${lvl} ${obj.msg}`;
 }
 
-// Segurança mínima para evitar XSS se personalizares mensagens
-function escapeHtml(s){
-  return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[c]));
-}
-
-// Append e scroll auto
 function appendLine(html) {
   const div = document.createElement('div');
   div.className = 'line';
   div.innerHTML = html;
   terminal.appendChild(div);
-  // manter só as últimas 500 linhas para não estourar memória
   if (terminal.children.length > 500) terminal.removeChild(terminal.children[0]);
   terminal.scrollTop = terminal.scrollHeight;
 }
 
-// Gera próxima linha segundo modo
 function nextLog() {
-  const mode = modeSelect.value;
-  if (mode === 'timestamp') {
-    appendLine(`<span class="ts">[${ts()}]</span> <span class="lvl-info">[INFO]</span> Heartbeat`);
-    return;
-  }
-  let item;
-  if (mode === 'random') {
-    item = sampleLogs[Math.floor(Math.random() * sampleLogs.length)];
-  } else { // cycle
-    item = sampleLogs[idx % sampleLogs.length];
-    idx++;
-  }
+  const item = sampleLogs[idx % sampleLogs.length];
+  idx++;
   appendLine(formatLine(item));
 }
 
-// Loop principal
 function startLoop() {
   if (timer) clearInterval(timer);
-  timer = setInterval(() => {
-    if (running) nextLog();
-  }, speed);
-  statusEl.textContent = running ? 'Running' : 'Paused';
+  timer = setInterval(() => { if (running) nextLog(); }, speed);
 }
 
 btnPause.addEventListener('click', () => {
@@ -213,27 +182,10 @@ btnPause.addEventListener('click', () => {
   btnPause.textContent = running ? 'Pausar' : 'Retomar';
   statusEl.textContent = running ? 'Running' : 'Paused';
 });
+btnClear.addEventListener('click', () => { terminal.innerHTML = ''; });
+btnOne.addEventListener('click', () => { nextLog(); });
 
-btnClear.addEventListener('click', () => {
-  terminal.innerHTML = '';
-});
-
-btnOne.addEventListener('click', () => {
-  nextLog();
-});
-
-speedInput.addEventListener('input', (e) => {
-  speed = +e.target.value;
-  spdVal.textContent = speed;
-  startLoop();
-});
-
-modeSelect.addEventListener('change', () => {
-  // reset index if cycling
-  if (modeSelect.value === 'cycle') idx = 0;
-});
-
-// Pequeno efeito inicial: escrever algumas linhas
+// inicial
 appendLine(`<span class="ts">[${ts()}]</span> <span class="lvl-info">[INFO]</span> Log simulator ready.`);
 startLoop();
 </script>
