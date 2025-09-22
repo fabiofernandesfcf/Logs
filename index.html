@@ -166,8 +166,15 @@ function appendLine(html) {
   terminal.scrollTop = terminal.scrollHeight;
 }
 
+// function nextLog() {
+//   const item = sampleLogs[idx % sampleLogs.length];
+//   idx++;
+//   appendLine(formatLine(item));
+// }
+
 function nextLog() {
-  const item = sampleLogs[idx % sampleLogs.length];
+  if (idx >= sampleLogs.length) return;
+  const item = sampleLogs[idx];
   idx++;
   appendLine(formatLine(item));
 }
@@ -186,7 +193,7 @@ btnClear.addEventListener('click', () => { terminal.innerHTML = ''; });
 btnOne.addEventListener('click', () => { nextLog(); });
 
 // inicial
-appendLine(`<span class="ts">[${ts()}]</span> <span class="lvl-info">[INFO]</span> Log simulator ready.`);
+appendLine(`<span class="ts">[${ts()}]</span> <span class="lvl-info">[INFO]</span> Log ready.`);
 startLoop();
 </script>
 </body>
