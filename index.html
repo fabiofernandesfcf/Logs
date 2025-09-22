@@ -142,7 +142,7 @@ const sampleLogs = [
   { lvl: 'INFO', msg: 'STATION_STATUS: ID=CS105, Location="Coimbra", Status=Online, AvailableConnectors=1' },
   { lvl: 'INFO', msg: 'SESSION_START: UserID=U212, StationID=CS105, ConnectorID=C1, StartTime=10:05, TariffID=T18' },
   { lvl: 'INFO', msg: 'SESSION_UPDATE: SessionID=S510, EnergyDelivered=2.5kWh, Status=Charging' },
-  { lvl: 'INFO', msg: 'SESSION_END: SessionID=S510, EnergyDelivered=5.0kWh, Cost=2.0€' },
+  { lvl: 'WARN', msg: 'SESSION_END: UserID=U212, SessionID=S510, Message="Charging session interrupted due to maintenance" },
 ];
 
 
