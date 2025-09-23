@@ -66,7 +66,7 @@
     <div class="controls">
       <button id="btnPause">Pausar</button>
       <button id="btnClear">Limpar</button>
-      <button class="primary" id="btnOne">Adicionar 1 linha</button>
+      <!-- <button class="primary" id="btnOne">Adicionar 1 linha</button> -->
     </div>
     <div class="footer"></div>
   </div>
@@ -91,7 +91,7 @@
 const terminal = document.getElementById('terminal');
 const btnPause = document.getElementById('btnPause');
 const btnClear = document.getElementById('btnClear');
-const btnOne = document.getElementById('btnOne');
+// const btnOne = document.getElementById('btnOne');
 const statusEl = document.getElementById('status');
 
 let running = true;
@@ -190,7 +190,7 @@ btnPause.addEventListener('click', () => {
   statusEl.textContent = running ? 'Running' : 'Paused';
 });
 btnClear.addEventListener('click', () => { terminal.innerHTML = ''; });
-btnOne.addEventListener('click', () => { nextLog(); });
+// btnOne.addEventListener('click', () => { nextLog(); });
 
 // inicial
 appendLine(`<span class="ts">[${ts()}]</span> <span class="lvl-info">[INFO]</span> Log ready.`);
