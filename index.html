@@ -76,13 +76,13 @@
     <h2>Perguntas</h2>
     <ul class="question-list">
       <li class="question-item"><strong>1.</strong> A tarifa T12 foi atualizada antes da conclusão da sessão S501.</li>
-      <li class="question-item"><strong>2.</strong> A sessão S504 do usuário U206 entregou exatamente 7 kWh de energia e custou 2,45€.</li>
+      <li class="question-item"><strong>2.</strong> A sessão S504 do User U206 entregou exatamente 7 kWh de energia e custou 2,45€.</li>
       <li class="question-item"><strong>3.</strong> A estação CS104 estava online e com conectores disponíveis quando a sessão S509 começou.</li>
-      <li class="question-item"><strong>4.</strong> O custo da sessão S507 do usuário U209 foi maior que 4€.</li>
+      <li class="question-item"><strong>4.</strong> O custo da sessão S507 do User U209 foi maior que 4€.</li>
       <li class="question-item"><strong>5.</strong> A sessão S502 foi interrompida devido a falha de pagamento.</li>
-      <li class="question-item"><strong>6.</strong> O usuário U212 completou sua sessão na estação CS105 sem alertas ou interrupções.</li>
-      <li class="question-item"><strong>7.</strong> A estação CS101 estava online e tinha 4 conectores disponíveis quando a sessão do usuário U201 começou.</li>
-      <li class="question-item"><strong>8.</strong> O usuário U205 conseguiu iniciar a sessão S503 na estação CS103 enquanto ela estava em manutenção.</li>
+      <li class="question-item"><strong>6.</strong> O User U212 completou sua sessão na estação CS105 sem alertas ou interrupções.</li>
+      <li class="question-item"><strong>7.</strong> A estação CS101 estava online e tinha 4 conectores disponíveis quando a sessão do User U201 começou.</li>
+      <li class="question-item"><strong>8.</strong> O User U205 conseguiu iniciar a sessão S503 na estação CS103 enquanto ela estava em manutenção.</li>
     </ul>
   </div>
 </div>
@@ -90,7 +90,7 @@
 <script>
 const terminal = document.getElementById('terminal');
 const btnPause = document.getElementById('btnPause');
-const btnClear = document.getElementById('btnClear');
+// const btnClear = document.getElementById('btnClear');
 // const btnOne = document.getElementById('btnOne');
 const statusEl = document.getElementById('status');
 
@@ -189,7 +189,7 @@ btnPause.addEventListener('click', () => {
   btnPause.textContent = running ? 'Pausar' : 'Retomar';
   statusEl.textContent = running ? 'Running' : 'Paused';
 });
-btnClear.addEventListener('click', () => { terminal.innerHTML = ''; });
+// btnClear.addEventListener('click', () => { terminal.innerHTML = ''; });
 // btnOne.addEventListener('click', () => { nextLog(); });
 
 // inicial
